@@ -50,10 +50,11 @@ public class Workflow implements Runnable{
         }
     }
 
-    public <T extends Task<T>> T registerTask(T task) {
+    public <T extends Task<T>> T registerTask(T task, String name) {
         task.self = task;
         task.workflow = this;
-        tasks.put(task.getName(), task);
+        task.name = name;
+        tasks.put(name, task);
         return task;
     }
 

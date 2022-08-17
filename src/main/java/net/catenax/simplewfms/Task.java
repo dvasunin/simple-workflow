@@ -3,22 +3,18 @@ package net.catenax.simplewfms;
 import java.util.*;
 import java.util.function.Consumer;
 
-public abstract class Task<T extends Task<T>> implements Runnable{
+public abstract class Task<T extends Task<T>> implements ThrowingRunnable{
 
     T self;
     Workflow workflow;
     Collection<Task<?>> dependsOn = new ArrayList<>();
     Collection<Task<?>> dependedOn = new ArrayList<>();
     Collection<String> dependsOnName = new ArrayList<>();
-    private String name;
+    String name;
     Status status = Status.READY;
-    Runnable processes = this;
+    ThrowingRunnable processes = this;
     private final Map<String, Object> outputData = new HashMap<>();
     private final Map<String, AbstractMap.SimpleImmutableEntry<String, String>> externalData = new HashMap<>();
-
-    protected Task(String name) {
-        this.name = name;
-    }
 
     boolean isReadyToRun() {
         return status != Status.DONE && dependsOn.stream().allMatch(t -> t.status == Status.DONE);
