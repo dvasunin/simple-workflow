@@ -1,7 +1,6 @@
 package net.catenax.simplewfms;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public abstract class Task<T extends Task<T>> implements ThrowingRunnable{
 

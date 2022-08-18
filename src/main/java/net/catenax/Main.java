@@ -5,10 +5,13 @@ import net.catenax.simplewfms.Task;
 import net.catenax.simplewfms.Workflow;
 
 import java.time.Instant;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) {
-        Workflow workflow = new Workflow(2);
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        Workflow workflow = new Workflow(executorService);
 
         workflow.registerTask(new SimpleTask(), "Start")
                 .setOutput("param0", "param0 value")
@@ -59,7 +62,7 @@ public class Main {
                 .addStep(Main::printStatus);
 
         workflow.run();
-        workflow.shutdown();
+        executorService.shutdown();
     }
 
     static void printStatus(Task<?> task) {

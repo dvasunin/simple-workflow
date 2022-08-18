@@ -4,17 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Workflow implements Runnable{
 
     final Map<String, Task<?>> tasks = new HashMap<>();
-    ExecutorService executor;
+    Executor executor;
 
-    public Workflow(int concurrency) {
-        executor = Executors.newFixedThreadPool(concurrency);
+    public Workflow(Executor executor) {
+        this.executor = executor;
     }
 
 
@@ -56,9 +55,5 @@ public class Workflow implements Runnable{
         task.name = name;
         tasks.put(name, task);
         return task;
-    }
-
-    public void shutdown() {
-        executor.shutdown();
     }
 }
