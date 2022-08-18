@@ -6,8 +6,8 @@ public interface ThrowingRunnable extends Runnable{
     default void run() {
         try {
             runThrows();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (final Exception t) {
+            throw LombokTool.sneakyThrow(t);
         }
     }
 

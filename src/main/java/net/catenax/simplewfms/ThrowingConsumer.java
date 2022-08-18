@@ -10,7 +10,7 @@ public interface ThrowingConsumer<T> extends Consumer<T> {
         try {
             acceptThrows(elem);
         } catch (final Exception e) {
-            throw new RuntimeException(e);
+            throw LombokTool.sneakyThrow(e);
         }
     }
 

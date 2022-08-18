@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
 
@@ -34,8 +35,10 @@ public class Workflow implements Runnable{
                         .filter(Task::isReadyToRun)
                         .toList();
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw LombokTool.sneakyThrow(e.getCause());
+        } catch (InterruptedException e) {
+            throw LombokTool.sneakyThrow(e);
         }
     }
 
@@ -55,5 +58,9 @@ public class Workflow implements Runnable{
         task.name = name;
         tasks.put(name, task);
         return task;
+    }
+
+    public Task<?> getTask(String name) {
+        return tasks.get(name);
     }
 }
