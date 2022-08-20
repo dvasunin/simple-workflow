@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public class Process2Step extends Task<Process2Step> {
 
-    Supplier<String> param0 = registerExternalParameter("Start", "param0", String.class);
+    Supplier<String> param0 = registerExternalParameter("Start", "param0");
 
     public Process2Step() {
         name = "Process2";

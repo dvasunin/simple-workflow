@@ -43,10 +43,10 @@ public abstract class Task<T extends Task<T>> implements ThrowingRunnable {
         return this;
     }
 
-    public <R> Supplier<R> registerExternalParameter(String taskName, String parameterName, Class<R> type) {
+    @SuppressWarnings("unchecked")
+    public <R> Supplier<R> registerExternalParameter(String taskName, String parameterName) {
         addDependency(taskName);
-        Supplier<?> paramSup = () -> workflow.tasks.get(taskName).outputData.get(parameterName);
-        return () -> type.cast(paramSup.get());
+        return () -> (R)workflow.tasks.get(taskName).outputData.get(parameterName);
     }
 
     public Task<T> addStep(ThrowingConsumer<T> step) {
