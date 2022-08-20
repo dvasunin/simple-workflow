@@ -1,10 +1,11 @@
+package net.catenax.simplewfms.test;
+
 import net.catenax.simplewfms.SimpleTask;
 import net.catenax.simplewfms.Task;
 import net.catenax.simplewfms.Workflow;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,7 +47,7 @@ public class WorkflowTest {
 
         workflow.registerTask(new SimpleTask(), "Start")
                 .setOutput("param0", "param0 value")
-                .addStep(WorkflowTest::printStatus);
+                .addStep(TaskTools::printStatus);
 
         class Process1 extends Task<Process1> {
             final String testString = "Hello from Step!";
@@ -60,12 +61,12 @@ public class WorkflowTest {
         workflow.registerTask(new Process1(), "Process1")
                 .registerExternalParameter("Start", "param0", "sparam")
                 .addStep(t -> System.out.println(t.testString))
-                .addStep(WorkflowTest::printStatus);
+                .addStep(TaskTools::printStatus);
 
         workflow.registerTask(new SimpleTask(), "Process11")
                 .addDependency("Process1")
                 .addStep(t -> Thread.sleep(3000))
-                .addStep(WorkflowTest::printStatus);
+                .addStep(TaskTools::printStatus);
 
         class Process2 extends Task<Process2> {
             @Override
@@ -77,7 +78,7 @@ public class WorkflowTest {
         }
         workflow.registerTask(new Process2(), "Process2")
                 .registerExternalParameter("Start", "param0", "sparam")
-                .addStep(WorkflowTest::printStatus);
+                .addStep(TaskTools::printStatus);
 
         class Process3 extends Task<Process3> {
             public void run() {
@@ -93,12 +94,15 @@ public class WorkflowTest {
                 .registerExternalParameter("Process1", "param1", "p1param")
                 .registerExternalParameter("Process2", "param1", "p2param")
                 .addDependency("Process11")
-                .addStep(WorkflowTest::printStatus);
+                .addStep(TaskTools::printStatus);
 
         return workflow;
     }
 
-    static void printStatus(Task<?> task) {
-        System.out.println("Task: " + task.getName() + "; Thread: " + Thread.currentThread().getId() + "; timestamp: " + Instant.now());
+    @Test
+    void runOkTestAutoWorkflowSetup() {
+        createTestWorkflow(executorService)
+                .loadTasks("net.catenax.simplewfms.test")
+                .run();
     }
 }

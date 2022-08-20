@@ -1,4 +1,4 @@
-package net.catenax.simplewfms;
+package net.catenax.utils;
 
 public class LombokTool {
     public static RuntimeException sneakyThrow(Throwable t) {

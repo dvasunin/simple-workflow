@@ -1,4 +1,4 @@
-package net.catenax.simplewfms;
+package net.catenax.utils;
 
 @FunctionalInterface
 public interface ThrowingRunnable extends Runnable{

@@ -1,4 +1,4 @@
-package net.catenax.simplewfms;
+package net.catenax.utils;
 
 import java.util.function.Consumer;
 

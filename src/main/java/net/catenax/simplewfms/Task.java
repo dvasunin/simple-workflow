@@ -1,15 +1,18 @@
 package net.catenax.simplewfms;
 
+import net.catenax.utils.ThrowingConsumer;
+import net.catenax.utils.ThrowingRunnable;
+
 import java.util.*;
 
-public abstract class Task<T extends Task<T>> implements ThrowingRunnable{
+public abstract class Task<T extends Task<T>> implements ThrowingRunnable {
 
     T self;
     Workflow workflow;
     Collection<Task<?>> dependsOn = new ArrayList<>();
     Collection<Task<?>> dependedOn = new ArrayList<>();
     Collection<String> dependsOnName = new ArrayList<>();
-    String name;
+    protected String name;
     Status status = Status.READY;
     ThrowingRunnable processes = this;
     private final Map<String, Object> outputData = new HashMap<>();
