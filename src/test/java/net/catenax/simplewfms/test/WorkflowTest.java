@@ -101,8 +101,11 @@ public class WorkflowTest {
 
     @Test
     void runOkTestAutoWorkflowSetup() {
-        createTestWorkflow(executorService)
-                .loadTasks("net.catenax.simplewfms.test")
-                .run();
+        var w= new Workflow(executorService)
+                .loadTasks("net.catenax.simplewfms.test");
+        w.registerTask(new SimpleTask(), "Start")
+                .setOutput("param0", "param0 value")
+                .addStep(TaskTools::printStatus);
+        w.run();
     }
 }
